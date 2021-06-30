@@ -9,13 +9,13 @@
         <input type='text' />
       </div>
     </div>
-    <div class='row' *ngIf='listFilter'>
+    <div class='row'>
       <div class='col-md-6'>
-        <h4>Filtered by: {{listFilter}}</h4>
+        <h4>Filtered by:</h4>
       </div>
     </div>
     <div class='table-responsive'>
-      <table class='table'>
+      <table class='table' *ngIf='products.length'>
         <thead>
           <tr>
             <th>
@@ -31,6 +31,14 @@
           </tr>
         </thead>
         <tbody>
+          <tr *ngFor='let product of products'>
+            <td></td>
+            <td>{{product.productName}}</td>
+            <td>{{product.productCode}}</td>
+            <td>{{product.productreleaseDate}}</td>
+            <td>{{product.price}}</td>
+            <td>{{product.starRating}}</td>
+          </tr>
         </tbody>
       </table>
     </div>
