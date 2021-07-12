@@ -4,7 +4,6 @@ import { ProductService } from './product.service';
 import { IProduct } from './products';
 
 @Component({
-  selector: "pm-products",
   templateUrl: "./product-list.component.html",
   styleUrls: ['./product-list.component.css']
 })
@@ -43,7 +42,7 @@ export class ProductListComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit(): void {
-    this.productService.getProducts().subscribe({
+    this.sub = this.productService.getProducts().subscribe({
       next: products => {
         this.products = products;
       this.filteredProducts = this.products;
