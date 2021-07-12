@@ -1,34 +1,40 @@
+import { HttpClient, HttpErrorResponse } from "@angular/common/http";
 import { Injectable } from "@angular/core";
+import { Observable, throwError } from "rxjs";
 import { IProduct } from "./products";
+import {catchError, tap} from 'rxjs/operators';
 
 @Injectable({
     providedIn: 'root'
 })
 
 export class ProductService {
+  
+  private productUrl = '../../assets/products/products.json';
+  
+  constructor(private http: HttpClient){}
 
-    getProducts(): IProduct[] {
-        return [
-              {
-    "productId": 1,
-    "productName": "Garden Cart",
-    "productCode": "GDN-9923",
-    "releaseDate": "March 18, 2021",
-    "description": "15 gallon cap rolling garden cart",
-    "imageUrl": "assets/images/garden_cart.png",
-    "price": 32.99,
-    "starRating": 4.2
-  },
-  {
-    "productId": 1,
-    "productName": "Garden Cart",
-    "productCode": "GDN-9923",
-    "releaseDate": "March 18, 2021",
-    "description": "15 gallon cap rolling garden cart",
-    "imageUrl": "assets/images/garden_cart.png",
-    "price": 32.99,
-    "starRating": 4.2
-  }
-        ];
+    getProducts(): Observable<IProduct[]> {
+      return this.http.get<IProduct[]>(this.productUrl).pipe( 
+      tap(data => console.log('All', JSON.stringify(data))),
+      catchError(this.handleError)
+      )
+    }
+
+    private handleError(err: HttpErrorResponse) {
+      // in a real world app, we may send the server to some remote logging infrastructure
+      // instead of just logging it to console.log
+      let errorMessage = '';
+
+      if(err.error instanceof ErrorEvent){
+        // A client-side or network error occured. Handle it accordingly.
+        errorMessage = `An error occured: ${err.error.message}`;
+      } else {
+        // The backend returned an unsuccesful response code. 
+        // The response body may contain clues as to what went wrong
+        errorMessage = `Server returned code ${err.status}, error message is: ${err.message}`;
+      }
+      console.log(errorMessage);
+      return throwError(errorMessage);
     }
 }
